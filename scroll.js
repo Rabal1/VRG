@@ -60,3 +60,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Устанавливаем плавность для анимации
   nav.style.transition = "transform 0.4s ease, opacity 0.4s ease";
 });
+/* =======================
+   6) Анимация появления навигации при загрузке
+   ======================= */
+window.addEventListener("DOMContentLoaded", () => {
+  const nav = document.querySelector("nav");
+  if (!nav) return;
+
+  const isMobile = window.innerWidth <= 768;
+
+  // Начальная позиция — вне экрана
+  nav.style.opacity = "0";
+  nav.style.transform = isMobile ? "translateY(100%)" : "translateY(-100%)";
+
+  // Плавное появление через 200 мс
+  setTimeout(() => {
+    nav.style.transition = "transform 0.6s ease, opacity 0.6s ease";
+    nav.style.transform = "translateY(0)";
+    nav.style.opacity = "1";
+  }, 200);
+});
