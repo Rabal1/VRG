@@ -245,6 +245,74 @@ header nav ul li.btn a:active {
   }
 }
 
+/* Кнопка закрепления панели */
+.pin-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.3s, color 0.3s;
+}
+
+/* Эффект при наведении */
+.pin-btn:hover {
+  transform: scale(1.2);
+  color: #00c8ff;
+}
+
+/* На ПК кнопка скрыта */
+@media (min-width: 769px) {
+  .pin-btn {
+    display: none;
+  }
+}
+
+/* На телефонах — кнопка встроена в нижнюю панель */
+@media (max-width: 768px) {
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #131212;
+    border-top: 2px solid #d8ba64;
+    padding: 0.7em 0.5em;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.5em;
+    transition: transform 0.3s ease;
+    will-change: transform;
+  }
+
+  nav ul {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Кнопка 📌 справа на панели */
+  .pin-btn {
+    display: inline-block;
+    background: none;
+    font-size: 1.3rem;
+    margin-left: auto;
+  }
+}
+
+/* Когда панель закреплена */
+header.fixed {
+  transform: translateY(0) !important;
+  transition: none;
+}
+
+
 /* ====== 💻 ПЛАНШЕТЫ ====== */
 @media (max-width: 1024px) and (min-width: 769px) {
   header {
@@ -291,5 +359,76 @@ header nav ul li.btn a:active {
   position: relative;
   z-index: 2;
 }
+/* ====== ТУМБЛЕР ФИКСАЦИИ (ТОЛЬКО МОБИЛЬНАЯ ВЕРСИЯ) ====== */
+@media (max-width: 768px) {
+  .toggle-container {
+    position: fixed;
+    bottom: 70px; /* чуть выше навигации */
+    right: 15px;
+    z-index: 1000;
+  }
 
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+  }
 
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    border: 2px solid #d8ba64;
+    border-radius: 34px;
+    transition: 0.4s;
+    box-shadow: 0 0 8px rgba(216, 186, 100, 0.3);
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 3px;
+    background-color: #d8ba64;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+
+  input:checked + .slider {
+    background-color: #d8ba64;
+    box-shadow: 0 0 12px rgba(216, 186, 100, 0.7);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(22px);
+    background-color: #000;
+  }
+}
+/* По умолчанию скрываем тумблер */
+.toggle-container {
+  display: none;
+}
+
+/* Показываем только на мобильных устройствах */
+@media (max-width: 768px) {
+  .toggle-container {
+    display: block;
+    position: fixed;
+    bottom: 70px;
+    right: 15px;
+    z-index: 1000;
+  }
+}
