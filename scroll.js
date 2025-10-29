@@ -37,33 +37,13 @@ window.addEventListener("DOMContentLoaded", () => {
 /* =======================
    3) Основное поведение панели при скролле
    ======================= */
-let lastScrollY = window.scrollY;
 let nav = document.querySelector("nav");
 let isFixed = false;
 const SCROLL_THRESHOLD = 15;
 
 if (nav) {
-  nav.style.transition = "transform 0.4s ease, opacity 0.4s ease";
+  nav.style.transition = "opacity 0.4s ease";
 }
-
-window.addEventListener("scroll", () => {
-  if (!nav || isFixed) return;
-
-  const currentScrollY = window.scrollY;
-  const diff = currentScrollY - lastScrollY;
-
-  if (Math.abs(diff) < SCROLL_THRESHOLD) return;
-
-  if (currentScrollY > lastScrollY) {
-    nav.style.opacity = "0";
-    nav.style.pointerEvents = "none";
-  } else {
-    nav.style.opacity = "1";
-    nav.style.pointerEvents = "auto";
-  }
-
-  lastScrollY = currentScrollY;
-});
 
 /* =======================
    4) Тумблер фиксации панели (только мобильные)
@@ -75,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!toggle || !nav) return;
 
-  let lastScroll = 0;
   let soundsReady = false;
 
   // ====== Разрешение на звук и вибрацию ======
@@ -89,13 +68,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Разрешаем звуки и вибрацию после первого взаимодействия
-  document.addEventListener("touchstart", () => {
-    if (!soundsReady) {
-      soundOn.play().catch(() => {});
-      soundOff.play().catch(() => {});
-      soundsReady = true;
-    }
-  }, { once: true });
+  document.addEventListener(
+    "touchstart",
+    () => {
+      if (!soundsReady) {
+        soundOn.play().catch(() => {});
+        soundOff.play().catch(() => {});
+        soundsReady = true;
+      }
+    },
+    { once: true }
+  );
 
   // ====== Отображение тумблера ======
   const updateToggleVisibility = () => {
@@ -109,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     isFixed = toggle.checked;
 
     if (isFixed) {
-      nav.style.transition = "opacity 0.4s ease";
+      // ВКЛЮЧЕН — показываем панель
       nav.style.opacity = "1";
       nav.style.pointerEvents = "auto";
       nav.classList.add("fixed");
@@ -119,6 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
         soundOn.play();
       }
     } else {
+      // ВЫКЛЮЧЕН — скрываем панель
+      nav.style.opacity = "0";
+      nav.style.pointerEvents = "none";
       nav.classList.remove("fixed");
       vibrate(40);
       if (soundsReady) {
@@ -128,20 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ====== Скролл-поведение ======
+  // ====== Обработка скролла ======
   window.addEventListener("scroll", () => {
     if (window.innerWidth <= 768) {
       if (!isFixed) {
-        const currentScroll = window.scrollY;
-        if (currentScroll > lastScroll + 10) {
-          nav.style.opacity = "0";
-          nav.style.pointerEvents = "none";
-        } else if (currentScroll < lastScroll - 10) {
-          nav.style.opacity = "1";
-          nav.style.pointerEvents = "auto";
-        }
-        lastScroll = currentScroll;
+        // Панель скрыта — ничего не делаем
+        nav.style.opacity = "0";
+        nav.style.pointerEvents = "none";
       } else {
+        // Панель закреплена — всегда видна
         nav.style.opacity = "1";
         nav.style.pointerEvents = "auto";
       }
