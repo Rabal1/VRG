@@ -1,11 +1,9 @@
 /* =======================
-   4) Плавный скролл (ПК + мобильные)
+   1) Плавный скролл (ПК + мобильные)
    ======================= */
 document.addEventListener("DOMContentLoaded", () => {
-  // CSS-плавность для всех устройств
   document.documentElement.style.scrollBehavior = "smooth";
 
-  // Дополнительно: плавный переход по якорям вручную (если нужно точнее)
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", function (e) {
       const targetId = this.getAttribute("href").slice(1);
@@ -19,174 +17,115 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =======================
-   5) Скрытие/показ навигации при скролле
-   ======================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const nav = document.querySelector("nav");
-  if (!nav) return;
-
-  let lastScroll = window.scrollY;
-  let ticking = false;
-
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const currentScroll = window.scrollY;
-
-        // На мобильных: панель снизу, на ПК — сверху
-        const isMobile = window.innerWidth <= 768;
-
-        if (currentScroll > lastScroll + 10) {
-          // Скроллим вниз → скрываем
-          if (isMobile) {
-            nav.style.transform = "translateY(100%)";
-          } else {
-            nav.style.transform = "translateY(-120%)";
-            nav.style.opacity = "0";
-          }
-        } else if (currentScroll < lastScroll - 10) {
-          // Скроллим вверх → показываем
-          nav.style.transform = "translateY(0)";
-          nav.style.opacity = "1";
-        }
-
-        lastScroll = currentScroll;
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
-
-  // Устанавливаем плавность для анимации
-  nav.style.transition = "transform 0.4s ease, opacity 0.4s ease";
-});
-/* =======================
-   6) Анимация появления навигации при загрузке
+   2) Анимация появления навигации при загрузке
    ======================= */
 window.addEventListener("DOMContentLoaded", () => {
   const nav = document.querySelector("nav");
   if (!nav) return;
 
   const isMobile = window.innerWidth <= 768;
-
-  // Начальная позиция — вне экрана
   nav.style.opacity = "0";
   nav.style.transform = isMobile ? "translateY(100%)" : "translateY(-100%)";
 
-  // Плавное появление через 200 мс
   setTimeout(() => {
     nav.style.transition = "transform 0.6s ease, opacity 0.6s ease";
     nav.style.transform = "translateY(0)";
     nav.style.opacity = "1";
   }, 200);
 });
-// Фиксация навигационной панели при скролле
-let lastScroll = 0;
-let isPinned = false;
 
-const nav = document.querySelector("nav");
-const pinToggle = document.getElementById("pin-toggle");
+/* =======================
+   3) Основное поведение панели при скролле
+   ======================= */
+let lastScrollY = window.scrollY;
+let nav = document.querySelector("nav");
+let isFixed = false;
+const SCROLL_THRESHOLD = 15;
 
-// Звуки
-const soundOn = new Audio("sounds/pin_on.mp3");
-const soundOff = new Audio("sounds/pin_off.mp3");
-soundOn.volume = 0.5;
-soundOff.volume = 0.5;
-
-// Плавный скролл для всех устройств
-document.documentElement.style.scrollBehavior = "smooth";
-
-// Логика скрытия/появления панели при скролле
-window.addEventListener("scroll", () => {
-  if (window.innerWidth <= 768) {
-    // Только для мобильных
-    if (isPinned) return; // если закреплена — не двигаем
-    const currentScroll = window.scrollY;
-
-    if (currentScroll > lastScroll) {
-      nav.style.transform = "translateY(100%)"; // уходит вниз
-    } else {
-      nav.style.transform = "translateY(0)"; // возвращается
-    }
-
-    lastScroll = currentScroll;
-  }
-});
-
-// Вибрация
-function vibrate(duration = 50) {
-  if ("vibrate" in navigator) {
-    navigator.vibrate(duration);
-  }
+// Плавность анимации
+if (nav) {
+  nav.style.transition = "transform 0.4s ease, opacity 0.4s ease";
 }
 
-// При клике на кнопку 📌
-pinToggle.addEventListener("click", () => {
-  isPinned = !isPinned;
+window.addEventListener("scroll", () => {
+  if (!nav || isFixed) return; // если закреплено — не двигаем
 
-  if (isPinned) {
-    nav.style.transform = "translateY(0)";
-    nav.style.transition = "transform 0.3s ease";
-    vibrate(80);
-    soundOn.currentTime = 0;
-    soundOn.play();
+  const currentScrollY = window.scrollY;
+  const diff = currentScrollY - lastScrollY;
+
+  if (Math.abs(diff) < SCROLL_THRESHOLD) return;
+
+  if (currentScrollY > lastScrollY) {
+    // скролл вниз
+    nav.style.transform = window.innerWidth <= 768 ? "translateY(100%)" : "translateY(-120%)";
+    nav.style.opacity = "0";
   } else {
-    nav.style.transition = "transform 0.3s ease";
-    vibrate(40);
-    soundOff.currentTime = 0;
-    soundOff.play();
+    // скролл вверх
+    nav.style.transform = "translateY(0)";
+    nav.style.opacity = "1";
   }
 
-  pinToggle.style.color = isPinned ? "#00c8ff" : "white";
+  lastScrollY = currentScrollY;
 });
 
-// === Тумблер фиксации панели ===
+/* =======================
+   4) Тумблер фиксации панели (только мобильные)
+   ======================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const nav = document.querySelector("nav");
+  const toggleContainer = document.querySelector(".toggle-container");
   const toggle = document.getElementById("fixToggle");
-  let fixed = false;
+
+  if (!toggle || !nav) return;
+
   let lastScroll = 0;
 
-  if (toggle) {
-    toggle.addEventListener("change", () => {
-      fixed = toggle.checked;
+  // Показываем тумблер только на мобильных
+  const updateToggleVisibility = () => {
+    toggleContainer.style.display = window.innerWidth <= 768 ? "block" : "none";
+  };
+  updateToggleVisibility();
+  window.addEventListener("resize", updateToggleVisibility);
 
-      if (fixed) {
-        nav.style.transition = "none";
-        nav.style.transform = "translateY(0)";
-        nav.classList.add("fixed");
-      } else {
-        nav.classList.remove("fixed");
-      }
-    });
+  // Вибрация
+  function vibrate(duration = 50) {
+    if ("vibrate" in navigator) navigator.vibrate(duration);
   }
 
+  // Звуки
+  const soundOn = new Audio("sounds/pin_on.mp3");
+  const soundOff = new Audio("sounds/pin_off.mp3");
+  soundOn.volume = 0.5;
+  soundOff.volume = 0.5;
+
+  // При изменении состояния тумблера
+  toggle.addEventListener("change", () => {
+    isFixed = toggle.checked;
+
+    if (isFixed) {
+      nav.style.transition = "none";
+      nav.style.transform = "translateY(0)";
+      nav.classList.add("fixed");
+      vibrate(80);
+      soundOn.currentTime = 0;
+      soundOn.play();
+    } else {
+      nav.classList.remove("fixed");
+      vibrate(40);
+      soundOff.currentTime = 0;
+      soundOff.play();
+    }
+  });
+
+  // Поведение панели при скролле (если не закреплена)
   window.addEventListener("scroll", () => {
-    if (!fixed && window.innerWidth <= 768) {
+    if (!isFixed && window.innerWidth <= 768) {
       const currentScroll = window.scrollY;
-      if (currentScroll > lastScroll) {
+      if (currentScroll > lastScroll + 10) {
         nav.style.transform = "translateY(100%)"; // скрыть вниз
-      } else {
+      } else if (currentScroll < lastScroll - 10) {
         nav.style.transform = "translateY(0)"; // показать вверх
       }
       lastScroll = currentScroll;
     }
   });
-});
-
-// Показываем тумблер только на мобильных устройствах
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleContainer = document.querySelector(".toggle-container");
-  if (toggleContainer) {
-    if (window.innerWidth <= 768) {
-      toggleContainer.style.display = "block";
-    } else {
-      toggleContainer.style.display = "none";
-    }
-
-    // При изменении ориентации/размера окна
-    window.addEventListener("resize", () => {
-      toggleContainer.style.display = window.innerWidth <= 768 ? "block" : "none";
-    });
-  }
 });
