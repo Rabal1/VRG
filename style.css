@@ -38,6 +38,29 @@ a {
   transition: 0.3s ease;
 }
 
+/* ====== АНИМАЦИИ (только для ПК) ====== */
+@media (min-width: 769px) {
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes glowIn {
+    0% {
+      box-shadow: 0 0 0 rgba(216, 186, 100, 0);
+    }
+    100% {
+      box-shadow: 0 0 20px rgba(216, 186, 100, 0.4);
+    }
+  }
+}
+
 /* ====== ХЕДЕР (ПК) ====== */
 header {
   display: flex;
@@ -59,6 +82,13 @@ header {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+@media (min-width: 769px) {
+  .logo a {
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.3s forwards, glowIn 2s ease 0.3s forwards;
+  }
+}
+
 .logo a:hover {
   transform: scale(1.05);
   box-shadow: 0 0 15px #d8ba64;
@@ -70,6 +100,26 @@ header {
 }
 
 /* ====== НАВИГАЦИЯ (ПК) ====== */
+header nav {
+  background: rgba(19, 18, 18, 0.9);
+  border: 2px solid #d8ba64;
+  border-radius: 12px;
+  padding: 0.8em 2em;
+  box-shadow: 0 0 15px rgba(216, 186, 100, 0.3);
+  transition: all 0.4s ease;
+}
+
+@media (min-width: 769px) {
+  header nav {
+    opacity: 0;
+    animation: fadeInUp 1.2s ease 0.6s forwards, glowIn 2s ease 0.6s forwards;
+  }
+}
+
+header nav:hover {
+  box-shadow: 0 0 20px rgba(216, 186, 100, 0.5);
+}
+
 header nav ul {
   list-style: none;
   display: flex;
@@ -156,13 +206,6 @@ header nav ul li.btn a:active {
     font-size: 1.6rem;
   }
 
-  /* Анимация появления панели */
-  @keyframes slideUp {
-    0% { transform: translateY(100%); opacity: 0; }
-    60% { transform: translateY(-5%); opacity: 1; }
-    100% { transform: translateY(0); opacity: 1; }
-  }
-
   nav {
     position: fixed;
     bottom: 0;
@@ -172,7 +215,6 @@ header nav ul li.btn a:active {
     border-top: 2px solid #d8ba64;
     padding: 0.7em 0;
     z-index: 999;
-    animation: slideUp 0.7s ease forwards;
     backdrop-filter: blur(10px);
     box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.5);
   }
@@ -212,3 +254,42 @@ header nav ul li.btn a:active {
     font-size: 1.6rem;
   }
 }
+/* ====== ЭФФЕКТ ГЛУБИНЫ (ПК) ====== */
+@media (min-width: 769px) {
+  body {
+    background: radial-gradient(circle at center, #1a1918 0%, #0f0f0f 100%);
+    background-size: 120%;
+    transition: background-position 0.3s ease, background-size 0.4s ease;
+  }
+
+  header,
+  nav {
+    transition: transform 0.25s ease, box-shadow 0.3s ease;
+  }
+
+  header:hover,
+  nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(216, 186, 100, 0.15);
+  }
+}
+/* ====== АНИМАЦИЯ ЛОГОТИПА ПРИ НАВЕДЕНИИ ====== */
+@keyframes logoPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(216, 186, 100, 0.4), inset 0 0 10px rgba(216, 186, 100, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(216, 186, 100, 0.8), inset 0 0 15px rgba(216, 186, 100, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(216, 186, 100, 0.4), inset 0 0 10px rgba(216, 186, 100, 0.2);
+  }
+}
+
+.logo a {
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+
+
