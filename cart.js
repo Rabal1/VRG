@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="qty-btn minus" data-index="${index}">−</button>
           <span class="item-qty">${item.quantity}</span>
           <button class="qty-btn plus" data-index="${index}">+</button>
+          <button class="remove-btn" data-index="${index}">✕</button>
         </div>
 
         <div class="item-total">
@@ -51,22 +52,38 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
 
-  // === Увеличение и уменьшение количества ===
+  // === Увеличение, уменьшение и удаление товаров ===
   cartItemsContainer.addEventListener("click", (e) => {
+    const index = e.target.dataset.index;
+
     if (e.target.classList.contains("plus")) {
-      const index = e.target.dataset.index;
       cart[index].quantity++;
       updateCart();
     }
 
     if (e.target.classList.contains("minus")) {
-      const index = e.target.dataset.index;
       if (cart[index].quantity > 1) {
         cart[index].quantity--;
+        updateCart();
       } else {
-        cart.splice(index, 1); // удаляем товар, если количество 0
+        // Плавное удаление при количестве = 1
+        const itemElement = e.target.closest(".cart-item");
+        itemElement.classList.add("removing");
+        setTimeout(() => {
+          cart.splice(index, 1);
+          updateCart();
+        }, 300);
       }
-      updateCart();
+    }
+
+    if (e.target.classList.contains("remove-btn")) {
+      // Плавное удаление при клике на ✕
+      const itemElement = e.target.closest(".cart-item");
+      itemElement.classList.add("removing");
+      setTimeout(() => {
+        cart.splice(index, 1);
+        updateCart();
+      }, 300);
     }
   });
 
@@ -86,7 +103,3 @@ document.addEventListener("DOMContentLoaded", () => {
   // === Первоначальное обновление ===
   updateCart();
 });
-localStorage.setItem("cart", JSON.stringify([
-  { name: "Дисплей iPhone 11", price: 3500, quantity: 1, image: "img/display.png" },
-  { name: "Аккумулятор Samsung", price: 1500, quantity: 2, image: "img/battery.png" }
-]));

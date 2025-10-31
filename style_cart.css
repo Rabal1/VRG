@@ -162,3 +162,90 @@
     align-self: flex-end;
   }
 }
+/* ====== Исправление бага: стабильная ширина карточек при удалении ====== */
+.cart-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+/* фиксируем ширину карточек */
+.cart-item {
+  flex: 0 0 300px; /* каждая карточка занимает ровно 300px, не сжимается и не растягивается */
+  box-sizing: border-box;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* при наведении — всё остаётся, просто пример */
+.cart-item:hover {
+  transform: scale(1.02);
+}
+/* ====== Анимация удаления товара ====== */
+.cart-item {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.cart-item.removing {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* Чтобы карточки не сжимались */
+#cartItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.cart-item {
+  flex: 1 1 300px;
+  box-sizing: border-box;
+}
+/* ====== Кнопка удаления товара ====== */
+.remove-btn {
+  background: #2a2a2a;
+  border: none;
+  color: #ff5555;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 6px 10px;
+  margin-left: 10px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.remove-btn:hover {
+  background: #ff5555;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.remove-btn:active {
+  transform: scale(0.95);
+  background: #ff2a2a;
+}
+/* ====== Отступ между названием и кнопками +/- ====== */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px; /* общий зазор между блоками */
+  padding: 15px;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* расстояние между картинкой и текстом */
+  flex: 1;
+}
+
+.item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* расстояние между кнопками +, − и ✕ */
+  margin-left: 30px; /* создаёт пространство между названием и кнопками */
+}

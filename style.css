@@ -207,11 +207,11 @@ header nav .cart.active {
   }
 }
 
-/* ====== ТУМБЛЕР ФИКСАЦИИ ====== */
+/* ====== ТУМБЛЕР ФИКСАЦИИ (исправленное положение) ====== */
 @media (max-width: 768px) {
   .toggle-container {
     position: fixed;
-    bottom: 70px;
+    bottom: 20px; /* изменено с 70px на 100px */
     right: 15px;
     z-index: 1000;
   }
@@ -332,22 +332,21 @@ header nav .cart.active {
   font-size: 0.95rem;
   color: #ccc;
 }
+
 /* Скрываем тумблер на ПК */
 @media (min-width: 769px) {
   .toggle-container {
     display: none !important;
   }
 }
-/* ====== ДОПОЛНИТЕЛЬНО: Управление видимостью навигации ====== */
 
-/* Класс для скрытия панели */
+/* ====== ДОПОЛНИТЕЛЬНО: Управление видимостью навигации ====== */
 .nav-hidden {
   transform: translateY(100%);
   opacity: 0;
   pointer-events: none;
 }
 
-/* Когда панель активна (включена тумблером) */
 .nav-visible {
   transform: translateY(0);
   opacity: 1;
