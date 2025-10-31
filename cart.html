@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Корзина | VRG TECH</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_cart.css">
+</head>
+<body>
+  <audio id="startupSound" src="sounds/startsounds1.wav" preload="auto"></audio>
+
+  <!-- ======= Шапка ======= -->
+  <div class="wrapper">
+    <header class="conteiner">
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" id="fixToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <span class="logo"><a href="index.html">VRG TECH</a></span>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="#">Личный кабинет</a></li>
+          <li><a href="#">Категории</a></li>
+          <li class="active"><a href="cart.html">Корзина</a></li>
+        </ul>
+      </nav>
+    </header>
+  </div>
+
+  <!-- ======= Контент корзины ======= -->
+  <section class="cart-section">
+    <div class="container">
+      <h2 class="section-title">Ваша корзина</h2>
+
+      <!-- Таблица товаров -->
+      <div class="cart-items" id="cartItems">
+        <p class="empty-cart">Ваша корзина пуста 🛒</p>
+      </div>
+
+      <!-- Итог и кнопка -->
+      <div class="cart-summary">
+        <p>Итого: <span id="cartTotal">0 ₽</span></p>
+        <button id="checkoutBtn" class="checkout-btn">Заказать</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= Подключаем скрипты ======= -->
+  <script src="sounds.js"></script>
+  <script src="scroll.js"></script>
+  <script src="main.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

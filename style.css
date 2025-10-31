@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 /* ====== СБРОС ====== */
 * {
@@ -14,21 +14,12 @@ body {
   background-color: #1a1918;
   line-height: 1.4;
   min-height: 100vh;
-  position: relative;
   overflow-x: hidden;
 }
 
 /* ====== ОБЁРТКА ====== */
 .wrapper {
   background-color: #000;
-}
-
-/* ====== КОНТЕЙНЕР ====== */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2em;
 }
 
 /* ====== ССЫЛКИ ====== */
@@ -38,30 +29,15 @@ a {
   transition: 0.3s ease;
 }
 
-/* ====== АНИМАЦИИ (только для ПК) ====== */
+/* ====== АНИМАЦИИ (ПК) ====== */
 @media (min-width: 769px) {
   @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes glowIn {
-    0% {
-      box-shadow: 0 0 0 rgba(216, 186, 100, 0);
-    }
-    100% {
-      box-shadow: 0 0 20px rgba(216, 186, 100, 0.4);
-    }
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
 
-/* ====== ХЕДЕР (ПК) ====== */
+/* ====== ХЕДЕР ====== */
 header {
   display: flex;
   justify-content: center;
@@ -85,7 +61,7 @@ header {
 @media (min-width: 769px) {
   .logo a {
     opacity: 0;
-    animation: fadeInUp 1s ease 0.3s forwards, glowIn 2s ease 0.3s forwards;
+    animation: fadeInUp 1s ease 0.2s forwards;
   }
 }
 
@@ -99,25 +75,21 @@ header {
   box-shadow: 0 0 10px rgba(216, 186, 100, 0.8);
 }
 
-/* ====== НАВИГАЦИЯ (ПК) ====== */
+/* ====== НАВИГАЦИЯ ====== */
 header nav {
   background: rgba(19, 18, 18, 0.9);
   border: 2px solid #d8ba64;
   border-radius: 12px;
   padding: 0.8em 2em;
   box-shadow: 0 0 15px rgba(216, 186, 100, 0.3);
-  transition: all 0.4s ease;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transform: translateY(-20px);
+  opacity: 0;
 }
 
-@media (min-width: 769px) {
-  header nav {
-    opacity: 0;
-    animation: fadeInUp 1.2s ease 0.6s forwards, glowIn 2s ease 0.6s forwards;
-  }
-}
-
-header nav:hover {
-  box-shadow: 0 0 20px rgba(216, 186, 100, 0.5);
+header nav.visible {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 header nav ul {
@@ -133,10 +105,10 @@ header nav ul li a {
   color: #fff;
   font-weight: 500;
   position: relative;
-  transition: all 0.25s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* ====== СВЕЧЕНИЕ ПРИ НАВЕДЕНИИ ====== */
+/* ====== СВЕЧЕНИЕ ====== */
 header nav ul li a:hover {
   color: #d8ba64;
   text-shadow: 0 0 8px rgba(216, 186, 100, 0.8);
@@ -148,44 +120,51 @@ header nav ul li.active a {
   text-shadow: 0 0 15px rgba(216, 186, 100, 1);
 }
 
+/* убрано подчёркивание */
 header nav ul li.active::after {
-  content: '';
-  display: block;
-  width: 60%;
-  height: 3px;
-  background: #d8ba64;
-  border-radius: 10px;
-  margin: 0.2em auto 0;
+  display: none;
 }
 
-/* ====== КНОПКИ ====== */
-header nav ul li.btn a {
-  background: #5a5750;
-  padding: 9px 17px;
-  border-radius: 5px;
-  transition: all 400ms ease;
+/* ====== КНОПКА "КОРЗИНА" (минималистичный стиль) ====== */
+header nav .cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
-header nav ul li.btn a:hover {
-  background: #3f3b33;
-  box-shadow: 0 0 12px rgba(216, 186, 100, 0.6);
+header nav .cart svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.6;
 }
 
-header nav ul li.btn a:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 15px rgba(216,186,100,1);
+header nav .cart:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d8ba64;
 }
 
-/* ====== 📱 МОБИЛЬНАЯ ВЕРСИЯ ====== */
+header nav .cart.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #d8ba64;
+  box-shadow: 0 0 8px #d8ba64;
+}
+
+/* ====== МОБИЛЬНАЯ ВЕРСИЯ ====== */
 @media (max-width: 768px) {
   body {
-    padding-bottom: 70px; /* место под нижнюю панель */
+    padding-bottom: 70px;
   }
 
   header {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 1em;
     padding: 1em 0;
   }
@@ -205,6 +184,7 @@ header nav ul li.btn a:active {
     z-index: 999;
     backdrop-filter: blur(10px);
     box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
   }
 
   nav ul {
@@ -214,12 +194,6 @@ header nav ul li.btn a:active {
 
   nav ul li a {
     font-size: 1rem;
-    transition: all 0.25s ease;
-  }
-
-  nav ul li a:hover {
-    color: #d8ba64;
-    text-shadow: 0 0 10px rgba(216,186,100,0.9);
   }
 
   nav ul li.active a {
@@ -227,122 +201,26 @@ header nav ul li.btn a:active {
     text-shadow: 0 0 18px rgba(216,186,100,1);
   }
 
-  nav ul li a:active {
-    transform: scale(0.9);
-    animation: glowPulse 0.4s ease;
-  }
-}
-
-/* Кнопка закрепления панели */
-.pin-btn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: white;
-  transition: transform 0.3s, color 0.3s;
-}
-
-/* Эффект при наведении */
-.pin-btn:hover {
-  transform: scale(1.2);
-  color: #00c8ff;
-}
-
-/* На ПК кнопка скрыта */
-@media (min-width: 769px) {
-  .pin-btn {
-    display: none;
-  }
-}
-
-/* На телефонах — кнопка встроена в нижнюю панель */
-@media (max-width: 768px) {
-  nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #131212;
-    border-top: 2px solid #d8ba64;
-    padding: 0.7em 0.5em;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 0.5em;
-    transition: transform 0.3s ease;
-    will-change: transform;
-  }
-
-  nav ul {
-    flex: 1;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  /* Кнопка 📌 справа на панели */
   .pin-btn {
     display: inline-block;
-    background: none;
     font-size: 1.3rem;
-    margin-left: auto;
   }
 }
 
-/* Когда панель закреплена */
-header.fixed {
-  transform: translateY(0) !important;
-  transition: none;
-}
-
-
-/* ====== 💻 ПЛАНШЕТЫ ====== */
-@media (max-width: 1024px) and (min-width: 769px) {
-  header {
-    gap: 3em;
-  }
-  .logo a {
-    font-size: 1.6rem;
-  }
-}
-/* ====== ЭФФЕКТ ГЛУБИНЫ (ПК) ====== */
-@media (min-width: 769px) {
-  body {
-    background: radial-gradient(circle at center, #1a1918 0%, #0f0f0f 100%);
-    background-size: 120%;
-    transition: background-position 0.3s ease, background-size 0.4s ease;
-  }
-
-  header,
-  nav {
-    transition: transform 0.25s ease, box-shadow 0.3s ease;
-  }
-
-  header:hover,
-  nav:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(216, 186, 100, 0.15);
-  }
-}
-/* ====== ТУМБЛЕР ФИКСАЦИИ (ТОЛЬКО МОБИЛЬНАЯ ВЕРСИЯ) ====== */
+/* ====== ТУМБЛЕР ФИКСАЦИИ ====== */
 @media (max-width: 768px) {
   .toggle-container {
     position: fixed;
-    bottom: 70px; /* чуть выше навигации */
+    bottom: 70px;
     right: 15px;
     z-index: 1000;
   }
 
   .switch {
-    position: relative;
     display: inline-block;
     width: 48px;
     height: 26px;
+    position: relative;
   }
 
   .switch input {
@@ -366,8 +244,8 @@ header.fixed {
   }
 
   .slider:before {
-    position: absolute;
     content: "";
+    position: absolute;
     height: 18px;
     width: 18px;
     left: 4px;
@@ -387,28 +265,12 @@ header.fixed {
     background-color: #000;
   }
 }
-/* По умолчанию скрываем тумблер */
-.toggle-container {
-  display: none;
-}
-
-/* Показываем только на мобильных устройствах */
-@media (max-width: 768px) {
-  .toggle-container {
-    display: block;
-    position: fixed;
-    bottom: 70px;
-    right: 15px;
-    z-index: 1000;
-  }
-}
 
 /* ====== БЛОК "НАШИ УСЛУГИ" ====== */
 .services {
   padding: 4em 0;
   background: #1a1918;
   text-align: center;
-  position: relative;
 }
 
 .services .section-title {
@@ -417,17 +279,6 @@ header.fixed {
   margin-bottom: 2em;
   letter-spacing: 1px;
   text-transform: uppercase;
-  position: relative;
-}
-
-.services .section-title::after {
-  content: "";
-  display: block;
-  width: 80px;
-  height: 3px;
-  background: #d8ba64;
-  margin: 0.5em auto 0;
-  border-radius: 10px;
 }
 
 .services-grid {
@@ -446,17 +297,14 @@ header.fixed {
   transition: all 0.4s ease;
   max-width: 320px;
   text-align: center;
-  color: #fff;
 }
 
-/* Плавное появление только на ПК */
 @media (min-width: 769px) {
   .service-card {
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 0.8s ease forwards;
   }
-
   .service-card:nth-child(1) { animation-delay: 0.2s; }
   .service-card:nth-child(2) { animation-delay: 0.4s; }
   .service-card:nth-child(3) { animation-delay: 0.6s; }
@@ -477,26 +325,32 @@ header.fixed {
 
 .service-card h3 {
   font-size: 1.2rem;
-  color: #fff;
   margin-bottom: 0.6em;
 }
 
 .service-card p {
   font-size: 0.95rem;
   color: #ccc;
-  line-height: 1.5;
 }
-
-/* ====== АДАПТИВ ====== */
-@media (max-width: 768px) {
-  .services {
-    padding: 3em 1em;
-  }
-  .service-card {
-    padding: 1.5em;
-  }
-  .services .section-title {
-    font-size: 1.6rem;
+/* Скрываем тумблер на ПК */
+@media (min-width: 769px) {
+  .toggle-container {
+    display: none !important;
   }
 }
+/* ====== ДОПОЛНИТЕЛЬНО: Управление видимостью навигации ====== */
 
+/* Класс для скрытия панели */
+.nav-hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Когда панель активна (включена тумблером) */
+.nav-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}

@@ -17,47 +17,41 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =======================
-   2) Анимация появления навигации при загрузке
+   2) Плавное появление навигации при загрузке (без подпрыгивания)
    ======================= */
 window.addEventListener("DOMContentLoaded", () => {
   const nav = document.querySelector("nav");
   if (!nav) return;
 
   const isMobile = window.innerWidth <= 768;
-  nav.style.opacity = "0";
-  nav.style.transform = isMobile ? "translateY(100%)" : "translateY(-100%)";
 
+  // Начальные стили
+  nav.style.opacity = "0";
+  nav.style.transform = isMobile ? "translateY(80px)" : "translateY(-40px)";
+  nav.style.transition = "none";
+
+  // Плавное появление без подскока
   setTimeout(() => {
-    nav.style.transition = "transform 0.6s ease, opacity 0.6s ease";
-    nav.style.transform = "translateY(0)";
+    nav.style.transition = "opacity 0.8s ease, transform 0.8s ease";
     nav.style.opacity = "1";
+    nav.style.transform = "translateY(0)";
   }, 200);
 });
 
 /* =======================
-   3) Основное поведение панели при скролле
-   ======================= */
-let nav = document.querySelector("nav");
-let isFixed = false;
-const SCROLL_THRESHOLD = 15;
-
-if (nav) {
-  nav.style.transition = "opacity 0.4s ease";
-}
-
-/* =======================
-   4) Тумблер фиксации панели (только мобильные)
+   3) Логика тумблера фиксации панели (только мобильные)
    ======================= */
 document.addEventListener("DOMContentLoaded", () => {
   const toggleContainer = document.querySelector(".toggle-container");
   const toggle = document.getElementById("fixToggle");
   const nav = document.querySelector("nav");
 
-  if (!toggle || !nav) return;
+  if (!toggleContainer || !toggle || !nav) return;
 
+  let isFixed = false;
   let soundsReady = false;
 
-  // ====== Разрешение на звук и вибрацию ======
+  // ====== Звуки ======
   const soundOn = new Audio("sounds/pin_on.mp3");
   const soundOff = new Audio("sounds/pin_off.mp3");
   soundOn.volume = 0.5;
@@ -80,9 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
     { once: true }
   );
 
-  // ====== Отображение тумблера ======
+  // ====== Отображение тумблера ====== 
   const updateToggleVisibility = () => {
-    toggleContainer.style.display = window.innerWidth <= 768 ? "block" : "none";
+    if (window.innerWidth <= 768) {
+      toggleContainer.style.display = "flex";
+      toggleContainer.style.justifyContent = "center";
+      toggleContainer.style.alignItems = "center";
+    } else {
+      toggleContainer.style.display = "none"; // Полностью скрыт на ПК
+      toggle.checked = false; // Сбрасываем состояние при переходе на ПК
+    }
   };
   updateToggleVisibility();
   window.addEventListener("resize", updateToggleVisibility);
@@ -92,8 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
     isFixed = toggle.checked;
 
     if (isFixed) {
-      // ВКЛЮЧЕН — показываем панель
+      // ВКЛЮЧЕН — плавно показываем панель
+      nav.style.transition = "opacity 0.5s ease, transform 0.5s ease";
       nav.style.opacity = "1";
+      nav.style.transform = "translateY(0)";
       nav.style.pointerEvents = "auto";
       nav.classList.add("fixed");
       vibrate(80);
@@ -102,8 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
         soundOn.play();
       }
     } else {
-      // ВЫКЛЮЧЕН — скрываем панель
+      // ВЫКЛЮЧЕН — плавно скрываем панель
+      nav.style.transition = "opacity 0.5s ease, transform 0.5s ease";
       nav.style.opacity = "0";
+      nav.style.transform = "translateY(80px)";
       nav.style.pointerEvents = "none";
       nav.classList.remove("fixed");
       vibrate(40);
@@ -114,18 +119,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ====== Обработка скролла ======
+  // ====== Стабильность при скролле ======
   window.addEventListener("scroll", () => {
     if (window.innerWidth <= 768) {
       if (!isFixed) {
-        // Панель скрыта — ничего не делаем
         nav.style.opacity = "0";
+        nav.style.transform = "translateY(80px)";
         nav.style.pointerEvents = "none";
       } else {
-        // Панель закреплена — всегда видна
         nav.style.opacity = "1";
+        nav.style.transform = "translateY(0)";
         nav.style.pointerEvents = "auto";
       }
     }
   });
 });
+/* =======================
+   Плавный скролл с easing
+   ======================= */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function(e) {
+    const targetId = this.getAttribute("href").slice(1);
+    const target = document.getElementById(targetId);
+    if (target) {
+      e.preventDefault();
+      smoothScrollTo(target.offsetTop, 800); // 800ms длительность
+    }
+  });
+});
+
+// Функция плавного скролла с easeInOutCubic
+function smoothScrollTo(targetY, duration) {
+  const startY = window.scrollY;
+  const diff = targetY - startY;
+  let startTime;
+
+  function easeInOutCubic(t) {
+    return t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function animate(time) {
+    if (!startTime) startTime = time;
+    const elapsed = time - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    window.scrollTo(0, startY + diff * easeInOutCubic(progress));
+    if (elapsed < duration) requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+}

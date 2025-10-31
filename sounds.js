@@ -118,7 +118,27 @@ async function tryStartupAutoPlay() {
 
   // если контекст suspended — пробуем resume
   if (audioCtx && audioCtx.state === 'suspended') {
-    try { await audioCtx.resume(); } catch (e) { /* ignore */ }
+      // ====== Звуки ======
+  const soundOn = new Audio("sounds/pin_on.mp3");
+  const soundOff = new Audio("sounds/pin_off.mp3");
+  soundOn.volume = 0.5;
+  soundOff.volume = 0.5;
+
+  function vibrate(duration = 50) {
+    if ("vibrate" in navigator) navigator.vibrate(duration);
+  }
+
+  document.addEventListener(
+    "touchstart",
+    () => {
+      if (!soundsReady) {
+        soundOn.play().catch(() => {});
+        soundOff.play().catch(() => {});
+        soundsReady = true;
+      }
+    },
+    { once: true }
+  );try { await audioCtx.resume(); } catch (e) { /* ignore */ }
   }
 
   try {
