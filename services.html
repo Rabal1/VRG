@@ -1,98 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VRG TECH</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style_services.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Услуги | VRG TECH</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style_services.css" />
 </head>
 <body>
-    <audio id="startupSound" src="sounds/startsounds1.wav" preload="auto"></audio>
+  <audio id="startupSound" src="sounds/startsounds1.wav" preload="auto"></audio>
 
-    <div class="wrapper">
-        <header class="conteiner">
+  <div class="wrapper">
+    <header class="conteiner">
+      <!-- Тумблер для мобильной навигации -->
+      <div class="toggle-container">
+        <label class="switch">
+          <input type="checkbox" id="fixToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
 
-            <!-- Тумблер для мобильной навигации -->
-            <div class="toggle-container">
-                <label class="switch">
-                    <input type="checkbox" id="fixToggle" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
+      <!-- Логотип -->
+      <span class="logo"><a href="index.html">VRG TECH</a></span>
 
-            <!-- Логотип -->
-            <span class="logo"><a href="index.html">VRG TECH</a></span>
+      <!-- Навигация -->
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li class="active"><a href="services.html">Услуги</a></li>
+          <li><a href="#account">Личный кабинет</a></li>
+          <li><a href="#categories">Категории</a></li>
+          <li><a href="cart.html">Корзина</a></li>
+        </ul>
+      </nav>
+    </header>
+  </div>
 
-            <!-- Навигация -->
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Главная</a></li>
-                    <li class="active"><a href="services.html">Услуги</a></li>
-                    <li><a href="#account">Личный кабинет</a></li>
-                    <li><a href="#categories">Категории</a></li>
-                    <li><a href="cart.html">Корзина</a></li>
-                </ul>
-            </nav>
+  <!-- Секция "Наши услуги" -->
+  <section class="services" id="services">
+    <div class="container">
+      <h2 class="section-title">Наши услуги</h2>
 
-        </header>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="icon">📱</div>
+          <h3>Ремонт смартфонов</h3>
+          <p>Профессиональный ремонт iPhone, Samsung, Xiaomi и других брендов с гарантией качества.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="icon">💻</div>
+          <h3>Ремонт ноутбуков</h3>
+          <p>Диагностика, чистка, замена матриц и клавиатур для восстановления работы устройства.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="icon">⚙️</div>
+          <h3>Продажа комплектующих</h3>
+          <p>Дисплеи, аккумуляторы, кабели и аксессуары — всё для вашего устройства в наличии.</p>
+        </div>
+      </div>
     </div>
-<!-- Секция "Наши услуги" -->
-<section class="services" id="services">
-  <div class="container">
-    <h2 class="section-title">Наши услуги</h2>
-    <div class="services-grid">
-  <div class="service-card">
-    <div class="icon">📱</div>
-    <h3>Ремонт смартфонов</h3>
-    <p>Профессиональный ремонт iPhone, Samsung, Xiaomi и других брендов с гарантией качества.</p>
-  </div>
+  </section>
 
-  <div class="service-card">
-    <div class="icon">🔋</div>
-    <h3>Замена аккумуляторов</h3>
-    <p>Быстрая и безопасная замена батарей с использованием сертифицированных компонентов.</p>
-  </div>
+  <!-- Блок B2B-подписок -->
+  <section class="b2b-subscriptions" id="subscriptions">
+    <div class="container">
+      <h2 class="section-title">Подписки для B2B</h2>
+      <div class="subscriptions-grid">
+        <div class="subscription-card">
+          <div class="icon">💼</div>
+          <h3>VRG Start</h3>
+          <p>Базовая подписка: скидки на ремонт и аксессуары, приоритетная техподдержка.</p>
+          <button class="subscribe-btn">Подключить</button>
+        </div>
 
-  <div class="service-card">
-    <div class="icon">💻</div>
-    <h3>Ремонт ноутбуков</h3>
-    <p>Диагностика, чистка, замена матриц и клавиатур для восстановления работы устройства.</p>
-  </div>
+        <div class="subscription-card">
+          <div class="icon">📈</div>
+          <h3>VRG Plus</h3>
+          <p>Расширенная: повышенные скидки, аналitika, персональный менеджер.</p>
+          <button class="subscribe-btn">Подключить</button>
+        </div>
 
-  <div class="service-card">
-    <div class="icon">⚙️</div>
-    <h3>Продажа комплектующих</h3>
-    <p>Дисплеи, аккумуляторы, кабели и аксессуары — всё для вашего устройства в наличии.</p>
-  </div>
-</div>
-
+        <div class="subscription-card">
+          <div class="icon">🚀</div>
+          <h3>VRG Plus Pro</h3>
+          <p>Премиум: эксклюзивные условия, приоритетное обслуживание и SLA.</p>
+          <button class="subscribe-btn">Подключить</button>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-
-    <!-- Секция "Главная" -->
-    <section id="home"></section>
-
-    <!-- Секция "Личный кабинет" -->
-    <section id="account"></section>
-
-    <!-- Секция "Категории" -->
-    <section id="categories"></section>
-
-    <!-- Секция "Корзина" -->
-    <section id="cart"></section>
-
-    <!-- Секция "Наши услуги" -->
-    <section class="services" id="services">
-
-    </section>
-
-    <!-- Подключаем скрипты -->
-    <script src="sounds.js"></script>
-    <script src="scroll.js"></script> <!-- сюда добавим плавный скролл -->
-    <script src="main.js"></script> <!-- сюда логика панели -->
+  <!-- Подключаем скрипты -->
+  <script src="sounds.js"></script>
+  <script src="scroll.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

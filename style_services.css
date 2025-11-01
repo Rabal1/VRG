@@ -1,141 +1,177 @@
-/* ====== Секция "Наши услуги" ====== */
-.services {
-  padding: 100px 20px;
-  background: #1a1918;
-  text-align: center;
+/* ====== АНИМАЦИЯ ПРИ ПОЯВЛЕНИИ ====== */
+@keyframes smoothFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.services .section-title {
-  font-size: 2rem;
-  color: #d8ba64;
-  margin-bottom: 60px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+/* ====== КАРТОЧКИ УСЛУГ И ПОДПИСОК ====== */
+.service-card,
+.subscription-card {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: smoothFadeInUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0s);
 
-/* Сетка услуг */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  justify-items: center;
-}
-
-/* Карточка услуги */
-.service-card {
-  background: rgba(19, 18, 18, 0.9);
-  border: 2px solid rgba(216, 186, 100, 0.4);
-  border-radius: 12px;
+  background: #1c1c1c;
+  border: 2px solid #2b2b2b;
+  border-radius: 14px;
   padding: 2em 1.5em;
-  max-width: 320px;
-  box-shadow: 0 0 15px rgba(216, 186, 100, 0.1);
-  transition: all 0.4s ease;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    box-shadow 0.45s ease-in-out,
+    border-color 0.45s ease-in-out,
+    background-color 0.45s ease-in-out;
+  will-change: box-shadow, border-color, background-color;
 }
 
-.service-card:hover {
+/* Плавная последовательность появления */
+.service-card:nth-child(1),
+.subscription-card:nth-child(1) { --delay: 0.2s; }
+.service-card:nth-child(2),
+.subscription-card:nth-child(2) { --delay: 0.4s; }
+.service-card:nth-child(3),
+.subscription-card:nth-child(3) { --delay: 0.6s; }
+.service-card:nth-child(4),
+.subscription-card:nth-child(4) { --delay: 0.8s; }
+
+/* ====== ЭФФЕКТ ПОДСВЕТКИ ====== */
+.service-card:hover,
+.subscription-card:hover {
   border-color: #d8ba64;
-  box-shadow: 0 0 25px rgba(216, 186, 100, 0.3);
-  transform: translateY(-5px) scale(1.03);
+  background-color: #1e1e1e;
+  box-shadow:
+    0 0 30px rgba(216, 186, 100, 0.4),
+    inset 0 0 25px rgba(216, 186, 100, 0.15);
 }
 
-/* Иконка услуги */
-.service-card .icon {
-  font-size: 2.5rem;
+/* ====== ИКОНКИ ====== */
+.service-card .icon,
+.subscription-card .icon {
+  font-size: 2.2rem;
   color: #d8ba64;
   margin-bottom: 1em;
 }
 
-/* Заголовок услуги */
-.service-card h3 {
+/* ====== ЗАГОЛОВКИ ====== */
+.service-card h3,
+.subscription-card h3 {
   font-size: 1.3rem;
-  margin-bottom: 0.6em;
   color: #fff;
+  margin-bottom: 0.5em;
 }
 
-/* Описание услуги */
-.service-card p {
+/* ====== ТЕКСТ ====== */
+.service-card p,
+.subscription-card p {
   font-size: 0.95rem;
   color: #ccc;
-  line-height: 1.4;
+  line-height: 1.5;
+  margin-bottom: 1.5em;
 }
 
-/* ====== Анимация появления карточек ====== */
-@media (min-width: 769px) {
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .service-card {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease forwards;
-  }
-
-  .service-card:nth-child(1) { animation-delay: 0.2s; }
-  .service-card:nth-child(2) { animation-delay: 0.4s; }
-  .service-card:nth-child(3) { animation-delay: 0.6s; }
-  .service-card:nth-child(4) { animation-delay: 0.8s; }
-}
-
-/* ====== Адаптивность ====== */
-@media (max-width: 768px) {
-  .services {
-    padding: 80px 15px;
-  }
-
-  .services .section-title {
-    font-size: 1.8rem;
-    margin-bottom: 40px;
-  }
-
-  .service-card {
-    max-width: 100%;
-    padding: 1.8em 1em;
-  }
-}
-
-/* ====== Кнопка в карточке ====== */
-.service-btn {
-  margin-top: 15px;
-  padding: 10px 25px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #000;
-  background: linear-gradient(135deg, #ffd700, #d4af37);
-  border: none;
+/* ====== КНОПКА "ПОДКЛЮЧИТЬ" ====== */
+.subscription-card button {
+  background: transparent;
+  color: #d8ba64;
+  border: 2px solid #d8ba64;
   border-radius: 10px;
+  padding: 0.8em 1.8em;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
-.service-btn:hover {
-  background: linear-gradient(135deg, #ffeb7f, #ffd700);
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(216, 186, 100, 0.5);
+.subscription-card button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(216, 186, 100, 0.25), transparent);
+  transition: all 0.6s ease;
+  z-index: 0;
 }
 
-.service-btn:active {
-  transform: scale(0.95);
+.subscription-card button:hover::before {
+  left: 100%;
 }
 
-/* ====== Переопределение текста и карточек ====== */
-.service-card p {
-  color: #ccc;
+.subscription-card button:hover {
+  background: #d8ba64;
+  color: #000;
+  box-shadow: 0 0 20px rgba(216, 186, 100, 0.6);
+}
+
+.subscription-card button:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 12px rgba(216, 186, 100, 0.4);
+}
+
+/* ====== КНОПКА "ПОДРОБНЕЕ" ====== */
+.subscription-card .details-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #d8ba64;
+  border: 1.5px solid rgba(216, 186, 100, 0.6);
+  border-radius: 10px;
+  padding: 0.7em 1.5em;
+  font-weight: 500;
   font-size: 0.95rem;
-  line-height: 1.4;
-  margin-bottom: 10px;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  margin-top: 0.8em;
 }
 
-/* Адаптивная сетка для мобильных */
-@media (max-width: 768px) {
-  .services-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
+.subscription-card .details-btn:hover {
+  background: rgba(216, 186, 100, 0.1);
+  box-shadow: 0 0 12px rgba(216, 186, 100, 0.3);
+}
 
-  .service-card {
-    padding: 1.8em 1em;
-  }
+.subscription-card .details-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 6px rgba(216, 186, 100, 0.2);
+}
+
+/* ====== СЕТКА УСЛУГ ====== */
+.services {
+  padding: 4em 2em;
+  background-color: #1a1918;
+  text-align: center;
+}
+
+.services-grid {
+  display: grid;
+  gap: 2em;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 2em;
+}
+
+/* ====== СЕТКА ПОДПИСОК ====== */
+.b2b-subscriptions {
+  padding: 4em 2em;
+  background-color: #111;
+  text-align: center;
+}
+
+.subscriptions-grid {
+  display: grid;
+  gap: 2em;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 2em;
 }
